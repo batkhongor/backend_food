@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: FOOD_RECOMMENDATION
+ 
+  datasource:
+    url: jdbc:mysql://localhost/test
+    username: root
+    password: admin
+    driverClassName: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximumPoolSize: 1
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect 
+ 
+server:
+  port: 8009
