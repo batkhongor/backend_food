@@ -50,6 +50,13 @@ public class Recipe {
 
 	@ManyToMany
 	@JoinTable(name = "recipe_step", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "step_id"))
-	private Map<Integer, Tag> steps = new HashMap<Integer, Tag>();
+	private Map<Integer, Step> steps = new HashMap<Integer, Step>();
 
+	public void addTag(Tag tag) {
+		this.tags.add(tag);
+	}
+	
+	public void addStep(Step step) {
+		this.steps.put(this.steps.size(), step);
+	}
 }
