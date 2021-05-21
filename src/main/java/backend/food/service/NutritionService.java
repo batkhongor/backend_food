@@ -18,10 +18,6 @@ public interface NutritionService {
 		throw new NotYetImplementedException();
 	}
 
-	public default Optional<Nutrition> findNutritionByName(String name) {
-		throw new NotYetImplementedException();
-	}
-
 	public default Nutrition createNutrition(Nutrition nutrition) {
 		throw new NotYetImplementedException();
 	}

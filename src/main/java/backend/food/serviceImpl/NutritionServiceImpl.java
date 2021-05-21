@@ -10,7 +10,7 @@ import backend.food.domain.Nutrition;
 import backend.food.repository.NutritionRepository;
 import backend.food.service.NutritionService;
 
-@Service("NutritionServiceImpl")
+@Service("nutritionServiceImpl")
 public class NutritionServiceImpl implements NutritionService {
 
 	@Autowired
@@ -29,14 +29,8 @@ public class NutritionServiceImpl implements NutritionService {
 	}
 
 	@Override
-	public Optional<Nutrition> findNutritionById(Integer nutrition) {
+	public Optional<Nutrition> findNutritionById(Integer nutritionId) {
 		// TODO Auto-generated method stub
-		return nutritionRepository.findById(nutrition);
-	}
-
-	@Override
-	public Optional<Nutrition> findNutritionByName(String name) {
-		// TODO Auto-generated method stub
-		return nutritionRepository.findByName(name);
+		return nutritionRepository.findById(nutritionId);
 	}
 }

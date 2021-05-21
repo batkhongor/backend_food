@@ -12,6 +12,6 @@ import backend.food.domain.Nutrition;
 @Transactional
 public interface NutritionRepository extends JpaRepository<Nutrition, Integer> {
 
-	public Optional<Nutrition> findByName(String name);
+	
 
 }
