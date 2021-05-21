@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import backend.food.domain.Tag;
+import backend.food.domain.Ingredient;
 
 @Repository
 @Transactional
-public interface TagRepository extends JpaRepository<Tag, Integer> {
+public interface IngredientRepository extends JpaRepository<Ingredient, Integer> {
 
-	public Optional<Tag> findByName(String name);
+	public Optional<Ingredient> findByName(String name);
 
 }

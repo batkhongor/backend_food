@@ -5,33 +5,33 @@ import java.util.Optional;
 
 import org.hibernate.cfg.NotYetImplementedException;
 
-import backend.food.domain.Tag;
+import backend.food.domain.Step;
 
-public interface TagService {
+public interface StepService {
 
-	// List of all tags
+	// List of all steps
 
-	public default List<Tag> findAllTags() {
+	public default List<Step> findAllSteps() {
 		throw new NotYetImplementedException();
 	}
 
-	public default Optional<Tag> findTagById(Integer tag) {
+	public default Optional<Step> findStepById(Integer step) {
 		throw new NotYetImplementedException();
 	}
 
-	public default Optional<Tag> findTagByName(String name) {
+	public default Optional<Step> findStepByName(String name) {
 		throw new NotYetImplementedException();
 	}
 
-	public default Tag createTag(Tag tag) {
+	public default Step createStep(Step step) {
 		throw new NotYetImplementedException();
 	}
 
-	public default Tag updateTag(Tag tag) {
+	public default Step updateStep(Step step) {
 		throw new NotYetImplementedException();
 	}
 
-	public default List<Tag> updateAllTag(List<Tag> tags) {
+	public default List<Step> updateAllStep(List<Step> steps) {
 		throw new NotYetImplementedException();
 	}
 }

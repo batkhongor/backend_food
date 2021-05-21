@@ -4,18 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import backend.food.domain.Tag;
 import backend.food.repository.TagRepository;
 import backend.food.service.TagService;
 
-
 @Service("tagServiceImpl")
 public class TagServiceImpl implements TagService {
-	
+
 	@Autowired
 	private TagRepository tagRepository;
 
@@ -24,19 +21,19 @@ public class TagServiceImpl implements TagService {
 		// TODO Auto-generated method stub
 		return tagRepository.save(tag);
 	}
-	
+
 	@Override
 	public List<Tag> findAllTags() {
 		// TODO Auto-generated method stub
 		return tagRepository.findAll();
 	}
-	
+
 	@Override
 	public Optional<Tag> findTagById(Integer tag) {
 		// TODO Auto-generated method stub
 		return tagRepository.findById(tag);
 	}
-	
+
 	@Override
 	public Optional<Tag> findTagByName(String name) {
 		// TODO Auto-generated method stub
