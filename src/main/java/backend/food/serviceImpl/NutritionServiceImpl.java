@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import backend.food.domain.Nutrition;
 import backend.food.repository.NutritionRepository;
 import backend.food.service.NutritionService;
-import backend.food.service.NutritionService;
 
 @Service("NutritionServiceImpl")
 public class NutritionServiceImpl implements NutritionService {

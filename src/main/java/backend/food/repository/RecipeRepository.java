@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import backend.food.domain.Recipe;
-import backend.food.domain.Tag;
 
 @Repository
 @Transactional
