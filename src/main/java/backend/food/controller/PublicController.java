@@ -3,9 +3,11 @@ package backend.food.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.management.InvalidAttributeValueException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -40,16 +42,12 @@ public class PublicController {
 	@PostMapping(value = "/tags/{name}")
 	public ResponseEntity<Tag> addTag(@PathVariable(name = "name") String name) throws Exception {
 		
-		
-		Tag newTag=null;
-		
-		if(!tagServiceImpl.findTagByName(name).isPresent())
+		if(tagServiceImpl.findTagByName(name).isPresent())
 		{
-			newTag=tagServiceImpl.createTag(new Tag(name));
+			throw new DuplicateKeyException(String.join(" ", "Duplicate Value :", name));
 		}
-		else {
-			throw new HttpMessageNotReadableException("Tag not found");
-		}
+		
+		Tag newTag=tagServiceImpl.createTag(new Tag(name));
 		
 		return new ResponseEntity<Tag>(newTag,HttpStatus.OK);
 	}

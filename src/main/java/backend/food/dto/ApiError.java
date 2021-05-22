@@ -1,4 +1,4 @@
-package backend.food.domain;
+package backend.food.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,9 +15,8 @@ public class ApiError {
 	   private HttpStatus status;
 	   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	   private LocalDateTime timestamp;
+	   private String error;
 	   private String message;
-	   private String debugMessage;
-	   private List<ApiSubError> subErrors;
 
 	   private ApiError() {
 	       timestamp = LocalDateTime.now();
@@ -31,14 +30,14 @@ public class ApiError {
 	   public ApiError(HttpStatus status, Throwable ex) {
 	       this();
 	       this.status = status;
-	       this.message = "Unexpected error";
-	       this.debugMessage = ex.getLocalizedMessage();
+	       this.error = "Unexpected error";
+	       this.message = ex.getLocalizedMessage();
 	   }
 
-	   public ApiError(HttpStatus status, String message, Throwable ex) {
+	   public ApiError(HttpStatus status, String error, Throwable ex) {
 	       this();
 	       this.status = status;
-	       this.message = message;
-	       this.debugMessage = ex.getLocalizedMessage();
+	       this.error = error;
+	       this.message = ex.getLocalizedMessage();
 	   }
 	}
