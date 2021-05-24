@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import backend.food.domain.Tag;
@@ -25,6 +28,7 @@ public class TagServiceImpl implements TagService {
 	@Override
 	public List<Tag> findAllTags() {
 		// TODO Auto-generated method stub
+		System.out.println("TagServiceImpl");
 		return tagRepository.findAll();
 	}
 

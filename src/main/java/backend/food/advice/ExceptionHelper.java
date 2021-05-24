@@ -17,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import backend.food.dto.ApiError;
+import javassist.NotFoundException;
 
 @ControllerAdvice
 public class ExceptionHelper extends ResponseEntityExceptionHandler {
@@ -65,7 +66,17 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
 
 		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
 	}
+	
+	@ExceptionHandler(value = {NotFoundException.class})
+	public ResponseEntity<Object> handleNotFoundException(NotFoundException ex){
+		
+		String error = "Not found Error";
 
+		logger.error(error, ex.getMessage());
+
+		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
+	}
+	
 	private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
 		return new ResponseEntity<>(apiError, apiError.getStatus());
 	}

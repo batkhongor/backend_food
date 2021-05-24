@@ -24,7 +24,9 @@ public class Nutrition {
 	@EqualsAndHashCode.Include
 	private Integer id;
 
-	// calories (#), total fat (PDV),
+	// calories (#)
+	private Double calories;
+	// total fat (PDV),
 	private Double totalfat;
 	// sugar (PDV)
 	private Double sugar;
@@ -36,4 +38,17 @@ public class Nutrition {
 	private Double saturatedfat;
 	// carbohydrates (PDV)
 	private Double carbohydrates;
+
+	public Nutrition(Double calories, Double totalfat, Double sugar, Double sodium, Double protein, Double saturatedfat,
+			Double carbohydrates) {
+
+		this.calories = calories;
+		this.totalfat = totalfat;
+		this.sugar = sugar;
+		this.sodium = sodium;
+		this.protein = protein;
+		this.saturatedfat = saturatedfat;
+		this.carbohydrates = carbohydrates;
+	}
+
 }

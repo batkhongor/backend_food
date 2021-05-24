@@ -27,4 +27,8 @@ public class Step {
 
 	@Column(nullable = false, unique = true)
 	private String name;
+	
+	public Step(String name) {
+		this.name=name;
+	}
 }

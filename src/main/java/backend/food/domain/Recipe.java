@@ -37,26 +37,45 @@ public class Recipe {
 	@Column(nullable = false, unique = true)
 	private String name;
 
-	private int minutes;
-	private int contributerId;
+	private Integer minutes;
+	private Integer contributerId;
 	private LocalDate submitted;
+	private String description;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "recipe_tag", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private Set<Tag> tags = new HashSet<Tag>();
 
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private Nutrition nutrition;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "recipe_step", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "step_id"))
 	private Map<Integer, Step> steps = new HashMap<Integer, Step>();
 
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	@JoinTable(name = "recipe_ingredient", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
+	private Set<Ingredient> ingredients = new HashSet<Ingredient>();
+	
+	
+	public Recipe(Integer id, String name, Integer minutes, Integer contributerId, LocalDate submitted, String description) {
+		this.id=id;
+		this.name=name;
+		this.minutes=minutes;
+		this.contributerId=contributerId;
+		this.submitted=submitted;
+		this.description=description;
+	}
+	
 	public void addTag(Tag tag) {
 		this.tags.add(tag);
 	}
 	
 	public void addStep(Step step) {
 		this.steps.put(this.steps.size(), step);
+	}
+	
+	public void addIngredient(Ingredient ingredient) {
+		this.ingredients.add(ingredient);
 	}
 }
