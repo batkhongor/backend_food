@@ -13,6 +13,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -30,7 +31,11 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
 
 		// TEST
 		String error = "Malformed JSON request";
-
+		
+		logger.debug(request.getContextPath());
+		logger.debug(((ServletWebRequest)request).getRequest().getRequestURI().toString());
+		
+		
 		logger.debug("Debugging log");
 		logger.info("Info log");
 		logger.warn("Hey, This is a warning!");
@@ -61,7 +66,7 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleDataException(DataException ex) {
 
 		String error = "SQL Error";
-
+		
 		logger.error("SQL Error: ", ex.getMessage());
 
 		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
@@ -73,6 +78,7 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
 		String error = "Not found Error";
 
 		logger.error(error, ex.getMessage());
+		logger.error("Not found Error: ", ex.toString() );
 
 		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
 	}

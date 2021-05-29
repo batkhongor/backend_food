@@ -15,7 +15,7 @@ public interface IngredientService {
 		throw new NotYetImplementedException();
 	}
 
-	public default Optional<Ingredient> findIngredientById(Integer Ingredient) {
+	public default Optional<Ingredient> findIngredientById(Integer ingredient) {
 		throw new NotYetImplementedException();
 	}
 
@@ -23,15 +23,15 @@ public interface IngredientService {
 		throw new NotYetImplementedException();
 	}
 
-	public default Ingredient createIngredient(Ingredient Ingredient) {
+	public default Ingredient createIngredient(Ingredient ingredient) {
 		throw new NotYetImplementedException();
 	}
 
-	public default Ingredient updateIngredient(Ingredient Ingredient) {
+	public default Ingredient updateIngredient(Ingredient ingredient) {
 		throw new NotYetImplementedException();
 	}
 
-	public default List<Ingredient> updateAllIngredient(List<Ingredient> Ingredients) {
+	public default List<Ingredient> updateAllIngredient(List<Ingredient> ingredients) {
 		throw new NotYetImplementedException();
 	}
 }

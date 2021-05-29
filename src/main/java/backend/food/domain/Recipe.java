@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -40,13 +41,15 @@ public class Recipe {
 	private Integer minutes;
 	private Integer contributerId;
 	private LocalDate submitted;
+	
+	@Column(columnDefinition = "TEXT")
 	private String description;
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "recipe_tag", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private Set<Tag> tags = new HashSet<Tag>();
 
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@Embedded
 	private Nutrition nutrition;
 
 	@ManyToMany(cascade = CascadeType.PERSIST)

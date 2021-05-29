@@ -1,6 +1,7 @@
 package backend.food.controller;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -26,10 +27,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.food.domain.Ingredient;
+import backend.food.domain.Interaction;
 import backend.food.domain.Recipe;
 import backend.food.domain.Step;
 import backend.food.domain.Tag;
+import backend.food.dto.InteractionDTO;
 import backend.food.service.IngredientService;
+import backend.food.service.InteractionService;
 import backend.food.service.RecipeService;
 import backend.food.service.StepService;
 import backend.food.service.TagService;
@@ -51,6 +55,9 @@ public class PublicController {
 
 	@Autowired
 	private IngredientService ingredientServiceImpl;
+	
+	@Autowired
+	private InteractionService interactionServiceImpl;
 
 	@GetMapping(value = "/tags")
 	public List<Tag> getTagList() {
@@ -64,6 +71,7 @@ public class PublicController {
 		Optional<Tag> tag = tagServiceImpl.findTagByName(name);
 
 		if (!tag.isPresent()) {
+			String.join(" ", "Tag not found Value :", name);
 			throw new NotFoundException(String.join(" ", "Tag not found Value :", name));
 		}
 
@@ -88,12 +96,14 @@ public class PublicController {
 		Optional<Step> step = stepServiceImpl.findStepByName(name);
 
 		if (!step.isPresent()) {
+			String.join(" ", "Step not found Value :", name);
 			throw new NotFoundException(String.join(" ", "Step not found Value :", name));
 		}
 
 		return new ResponseEntity<Step>(step.get(), HttpStatus.OK);
 	}
-
+	
+	
 	@PostMapping(value = "/steps/{name}")
 	public ResponseEntity<Step> addStep(@PathVariable(name = "name") String name) throws Exception {
 
@@ -124,6 +134,7 @@ public class PublicController {
 		Optional<Ingredient> ingredient = ingredientServiceImpl.findIngredientByName(name);
 
 		if (!ingredient.isPresent()) {
+			System.out.println(String.join(" ", "Ingredient not found Value :", name));
 			throw new NotFoundException(String.join(" ", "Ingredient not found Value :", name));
 		}
 
@@ -134,24 +145,71 @@ public class PublicController {
 	public List<Recipe> getRecipes() throws Exception {
 		return recipeServiceImpl.findAllRecipes();
 	}
+	
+	@GetMapping("/recipes/{id}")
+	public ResponseEntity<Recipe> getRecipeById(@PathVariable(name = "id") Integer id) throws Exception {
+		
+		Optional<Recipe> recipe = recipeServiceImpl.findRecipeById(id);
+
+		if (!recipe.isPresent()) {
+			System.out.println(String.join(" ", "recipe not found Value :", id.toString()));
+			throw new NotFoundException(String.join(" ", "recipe not found Value :", id.toString()));
+		}
+
+		return new ResponseEntity<Recipe>(recipe.get(), HttpStatus.OK);
+	}
 
 	@PostMapping("/recipes")
 	public Recipe createRecipe(@RequestBody Recipe recipe) throws Exception {
 		
-		Recipe entity = recipe;
-		Set<Tag> tags = recipe.getTags();
-		for (Tag t : tags) {
-			
-			Tag tempTag = tagServiceImpl.findTagByName(t.getName()).orElse(null);
-			if (tempTag != null) {
-				System.out.println(String.join(" ", "Tag name:", tempTag.getName()));
-			} else {
-				tagServiceImpl.createTag(new Tag(t.getName()));
-			}
+		Optional<Recipe> recipeOld = recipeServiceImpl.findRecipeById(recipe.getId());
+		
+		if (recipeOld.isPresent()) {
+			throw new DuplicateKeyException(String.join(" ", "Duplicate recipe Value :", recipe.getId().toString()));
+		}
+		
+		return recipeServiceImpl.createRecipe(recipe);
+	}
+	
+	
+	@GetMapping("/interaction/{id}")
+	public ResponseEntity<Interaction> getInteractionById(@PathVariable(name = "id") Integer id) throws Exception {
+		
+		Optional<Interaction> interaction = interactionServiceImpl.findInteractionById(id);
 
+		if (!interaction.isPresent()) {
+			System.out.println(String.join(" ", "interaction not found Value :", id.toString()));
+			throw new NotFoundException(String.join(" ", "interaction not found Value :", id.toString()));
 		}
 
-		entity = recipeServiceImpl.createRecipe(recipe);
-		return entity;
+		return new ResponseEntity<Interaction>(interaction.get(), HttpStatus.OK);
+	}
+	
+	@PostMapping("/interactions")
+	public Interaction createInteraction(@RequestBody InteractionDTO interactionDTO) throws Exception {
+		
+		
+		if(interactionDTO.getRecipe()==null) {
+			throw new NotFoundException("recipe not found ");
+		}
+		
+		
+		Interaction interaction= new Interaction(interactionDTO.getUser_id(), 
+					interactionDTO.getRecipe(), interactionDTO.getDate(), interactionDTO.getAction(), interactionDTO.getValue());
+		
+		String userId=interaction.getUser_id();
+		Optional<Recipe> recipe= recipeServiceImpl.findRecipeById(interaction.getRecipe().getId());
+		LocalDate date= interaction.getDate();
+		String action=interaction.getAction();
+		String value=interaction.getValue();
+		
+		if(!recipe.isPresent()) {
+			throw new NotFoundException(String.join(" ", "recipe not found Value :", interaction.getRecipe().getId().toString()));
+		}
+		
+		Interaction interactionNew=new Interaction(userId, recipe.get(), date, action, value);
+		
+		
+		return interactionServiceImpl.createInteraction(interactionNew);
 	}
 }

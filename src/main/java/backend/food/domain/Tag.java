@@ -25,7 +25,7 @@ public class Tag {
 	@EqualsAndHashCode.Include
 	private Integer id;
 
-	@Column(unique = true, length = 100)
+	@Column(unique = true, length = 120)
 	private String name;
 
 	public Tag(String name) {
