@@ -34,4 +34,4 @@ build/
 *.log
 
 
-!**/src/main/resources/data/
+**/src/main/resources/data/
