@@ -7,11 +7,11 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
-import javax.validation.Valid;
 
 import org.omg.CORBA.DynAnyPackage.InvalidValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import backend.food.domain.Ingredient;
 import backend.food.domain.Interaction;
@@ -58,6 +59,9 @@ public class PublicController {
 	
 	@Autowired
 	private InteractionService interactionServiceImpl;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@GetMapping(value = "/tags")
 	public List<Tag> getTagList() {
@@ -147,6 +151,7 @@ public class PublicController {
 	}
 	
 	@GetMapping("/recipes/{id}")
+	
 	public ResponseEntity<Recipe> getRecipeById(@PathVariable(name = "id") Integer id) throws Exception {
 		
 		Optional<Recipe> recipe = recipeServiceImpl.findRecipeById(id);
@@ -154,6 +159,13 @@ public class PublicController {
 		if (!recipe.isPresent()) {
 			System.out.println(String.join(" ", "recipe not found Value :", id.toString()));
 			throw new NotFoundException(String.join(" ", "recipe not found Value :", id.toString()));
+		}
+		
+		// get list of related recipies
+		List<Object> recipies = restTemplate.getForObject("http://recommendation-service/recommendation/recipe/", List.class);
+		
+		for(int i=0;i<recipies.size();i++) {
+			System.out.println(String.join(" recipe name:",recipies.get(i).toString()));
 		}
 
 		return new ResponseEntity<Recipe>(recipe.get(), HttpStatus.OK);
